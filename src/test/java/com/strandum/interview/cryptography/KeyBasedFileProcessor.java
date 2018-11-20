@@ -41,11 +41,11 @@ public class KeyBasedFileProcessor
         String defaultFileName)
         throws IOException, NoSuchProviderException
     {
-        InputStream in = new BufferedInputStream(new FileInputStream(inputFileName));
-        InputStream keyIn = new BufferedInputStream(new FileInputStream(keyFileName));
-        decryptFile(in, keyIn, passwd, defaultFileName);
-        keyIn.close();
-        in.close();
+        try(InputStream in = new BufferedInputStream(new FileInputStream(inputFileName))){
+        	try(InputStream keyIn = new BufferedInputStream(new FileInputStream(keyFileName))){
+        		decryptFile(in, keyIn, passwd, defaultFileName);
+        	}
+        }
     }
 
     /**
@@ -174,10 +174,10 @@ public class KeyBasedFileProcessor
         boolean         withIntegrityCheck)
         throws IOException, NoSuchProviderException, PGPException
     {
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(outputFileName));
-        PGPPublicKey encKey = PGPExampleUtil.readPublicKey(encKeyFileName);
-        encryptFile(out, inputFileName, encKey, armor, withIntegrityCheck);
-        out.close();
+        try(OutputStream out = new BufferedOutputStream(new FileOutputStream(outputFileName))){
+        	PGPPublicKey encKey = PGPExampleUtil.readPublicKey(encKeyFileName);
+        	encryptFile(out, inputFileName, encKey, armor, withIntegrityCheck);
+        }
     }
 
     private void encryptFile(
