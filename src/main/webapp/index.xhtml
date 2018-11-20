@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    	<h:outputStylesheet library="css" name="table-style.css"  />
+    </h:head>
+    <h:body>
+
+	<h1>Employees List</h1>
+
+	<p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+		<f:facet name="default">
+			<h:outputText value="Status: StandBy" />
+		</f:facet>
+
+		<f:facet name="start">
+			<p:graphicImage name="/images/ajaxloadingbar.gif" />
+		</f:facet>
+
+		<f:facet name="complete">
+			<h:outputText value="Status: Completed" />
+		</f:facet>
+	</p:ajaxStatus>
+
+	<p:ajaxStatus onstart="PF('statusDialog').show()"
+		onsuccess="PF('statusDialog').hide()" />
+
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="false">
+		<p:graphicImage name="/images/ajaxloadingbar.gif" />
+	</p:dialog>
+
+	<h:form prependId="false">
+
+		<p:growl id="growl" life="5000" />
+
+		<p:commandButton value="Sync Employees" id="requestEmployees"
+			update="growl empTable" actionListener="#{employeeBean.syncAction}"
+			styleClass="ui-priority-primary" />
+
+		<p:dataTable id="empTable" var="e" value="#{employeeBean.employees}">
+		    <p:column headerText="Id">
+		        <h:outputText value="#{e.id}" />
+		    </p:column>
+		 
+		    <p:column headerText="First Name">
+		        <h:outputText value="#{e.firstName}" />
+		    </p:column>
+		 
+		    <p:column headerText="Last Name">
+		        <h:outputText value="#{e.lastName}" />
+		    </p:column>
+
+		    <p:column headerText="First Name">
+		        <h:outputText value="#{e.firstName}" />
+		    </p:column>
+		 
+		    <p:column headerText="Last Name">
+		        <h:outputText value="#{e.lastName}" />
+		    </p:column>
+		    
+		</p:dataTable>
+
+	</h:form>
+
+</h:body>
+</html>
