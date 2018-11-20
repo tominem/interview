@@ -1,5 +1,11 @@
 package com.strandum.interview.cryptography;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+import org.junit.Before;
 import org.junit.Test;
 
 public class CryptoTest {
@@ -9,16 +15,27 @@ public class CryptoTest {
 	private final String identity = "strandum";
 	private final String passwd = "strandum";
 	private final int    keysize = 2048;
-	private final String encryptIn = "book.pdf";
-	private final String encryptOut = "English_Grammar_in_Use_4ed_SB_www.frenglish.ru.enc";
+	private final String encryptIn = "strandum.txt";
+	private final String encryptOut = "strandum.enc";
 	private boolean isArmor = true;
 	
+	@Before
+	public void createFile() throws FileNotFoundException, IOException {
+		createTextFile();
+	}
+
+	private void createTextFile() throws IOException, FileNotFoundException {
+		try(FileOutputStream fos = new FileOutputStream(encryptIn)){
+			fos.write(new String("Testing the signed file at Strandum!!!").getBytes(StandardCharsets.UTF_8));
+		}
+	}
+	
 	@Test
-	public void encryptDecrypt() throws Exception{
+	public void pgpCryptoTest() throws Exception{
 		
 		PGPCrypt crypt = new PGPCrypt();
-//		generateKeyPar(crypt);
-//		encrypt(crypt);
+		generateKeyPar(crypt);
+		encrypt(crypt);
 		decrypt(crypt);
 		
 	}
